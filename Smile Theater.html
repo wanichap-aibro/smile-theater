@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smile Theater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Prompt:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0c0405;--panel:#170809;--red:#d3182a;--deep:#7d0b17;--butter:#ffeec8;--gold:#f6b93b;--ink:#2a0a0d;--mute:#b99a9a;
+  color-scheme:dark;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#3a0710 0,var(--black) 60%) fixed;color:var(--butter);
+  font-family:"Prompt",system-ui,sans-serif;line-height:1.6;min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 60px}
+
+/* marquee sign */
+.sign{margin:28px auto 0;max-width:760px;padding:34px 20px 26px;text-align:center;border:3px solid var(--red);border-radius:14px;
+  background:linear-gradient(#1d0709,#0c0405);position:relative;box-shadow:0 0 40px #d3182a55,inset 0 0 30px #d3182a33}
+.sign::before,.sign::after{content:"";position:absolute;left:10px;right:10px;height:10px;
+  background:radial-gradient(circle,var(--gold) 0 3px,transparent 4px) 0 0/22px 10px repeat-x;animation:blink 1.4s steps(1) infinite}
+.sign::before{top:8px}.sign::after{bottom:8px;animation-delay:.7s}
+@keyframes blink{50%{opacity:.25}}
+.sign h1{margin:0;font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;font-size:clamp(44px,11vw,96px);line-height:.95;letter-spacing:.04em;
+  color:var(--butter);text-shadow:0 0 6px #ff4d5e,0 0 22px var(--red),0 0 48px var(--red)}
+.sign h1 span{color:var(--red);text-shadow:0 0 6px #ff4d5e,0 0 22px var(--red)}
+.sign p{margin:6px 0 0;color:var(--mute)}
+.stripe{height:14px;margin:26px 0 0;background:repeating-linear-gradient(90deg,var(--red) 0 28px,var(--butter) 28px 56px);border-radius:3px 3px 0 0}
+
+/* stats + controls */
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:26px 0 10px}
+.stats{display:flex;gap:22px;color:var(--mute);font-size:15px}
+.stats b{font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:34px;color:var(--gold);margin-right:6px;letter-spacing:.04em}
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+input,textarea,select{font:inherit;color:var(--butter);background:#240c0e;border:1px solid #5a1a20;border-radius:8px;padding:10px 12px;width:100%}
+input::placeholder,textarea::placeholder{color:#8a6a6a}
+input:focus-visible,textarea:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tools input{width:220px}
+button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:10px 22px;font-weight:700;background:var(--red);color:#fff;box-shadow:0 4px 0 var(--deep)}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--deep)}
+button.ghost{background:transparent;color:var(--butter);box-shadow:none;border:1px solid #5a1a20}
+
+/* add form */
+#form{display:none;margin:10px 0 28px;padding:22px;border:1px dashed var(--red);border-radius:12px;background:var(--panel)}
+#form.open{display:block}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.grid .full{grid-column:1/-1}
+label{display:block;font-size:14px;color:var(--mute);margin-bottom:4px}
+.stars{display:flex;gap:4px}
+.stars button{background:none;box-shadow:none;padding:0 2px;font-size:30px;line-height:1;color:#5a3a3a}
+.stars button.on{color:var(--gold)}
+.actions{display:flex;gap:10px;margin-top:16px}
+
+/* tickets */
+.list{display:grid;gap:22px;margin-top:20px}
+.ticket{display:grid;grid-template-columns:1fr 150px;color:var(--ink);background:var(--butter);border-radius:12px;position:relative;
+  -webkit-mask:radial-gradient(circle 12px at calc(100% - 150px) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 12px at calc(100% - 150px) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+  mask:radial-gradient(circle 12px at calc(100% - 150px) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle 12px at calc(100% - 150px) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+  filter:drop-shadow(0 8px 18px #000a)}
+.main{padding:20px 24px;border-left:14px solid var(--red)}
+.main h2{margin:0;font-family:"Bebas Neue","Prompt",sans-serif;font-weight:400;font-size:38px;line-height:1.05;letter-spacing:.03em;color:var(--deep);overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:4px 22px;margin:8px 0 0;font-size:14px}
+.meta b{color:var(--red)}
+.note{margin:12px 0 0;padding-top:10px;border-top:1px dashed #c9a96a;font-size:15px;font-style:italic}
+.stub{border-left:2px dashed #b48a4a;padding:18px 12px;background:var(--red);color:var(--butter);display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;border-radius:0 12px 12px 0}
+.stub .adm{font-family:"Bebas Neue",sans-serif;font-size:26px;letter-spacing:.12em;line-height:1}
+.stub .st{color:var(--gold);font-size:20px;letter-spacing:2px}
+.stub .seat{font-family:"Bebas Neue",sans-serif;font-size:34px;line-height:1}
+.stub .seat small{display:block;font-family:"Prompt";font-size:12px;opacity:.85}
+.stub button{padding:4px 12px;font-size:13px;background:#00000055;box-shadow:none;font-weight:500}
+.empty{text-align:center;padding:50px 10px;color:var(--mute)}
+.empty .pop{font-size:64px}
+footer{text-align:center;color:#7a5a5a;font-size:13px;margin-top:40px}
+
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .ticket{grid-template-columns:1fr;-webkit-mask:none;mask:none}
+  .stub{flex-direction:row;border-left:0;border-top:2px dashed #b48a4a;border-radius:0 0 12px 12px;gap:8px}
+  .tools input{width:100%}.tools{width:100%}
+}
+@media (prefers-reduced-motion:reduce){.sign::before,.sign::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="sign">
+    <h1>Smile <span>Theater</span></h1>
+    <p>🍿 เก็บตั๋วหนังทุกใบ ไว้เป็นความทรงจำ</p>
+  </header>
+  <div class="stripe" aria-hidden="true"></div>
+
+  <div class="bar">
+    <div class="stats"><div><b id="sCount">0</b>เรื่อง</div><div><b id="sAvg">–</b>ดาวเฉลี่ย</div></div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="ค้นหาหนังหรือโรงหนัง" aria-label="ค้นหา">
+      <button id="toggle">+ เพิ่มตั๋ว</button>
+    </div>
+  </div>
+
+  <section id="form" aria-label="เพิ่มตั๋วหนัง">
+    <div class="grid">
+      <div class="full"><label for="fTitle">ชื่อหนัง</label><input id="fTitle" placeholder="เช่น Interstellar"></div>
+      <div><label for="fDate">วันที่ดู</label><input id="fDate" type="date"></div>
+      <div><label for="fTime">รอบฉาย</label><input id="fTime" type="time"></div>
+      <div><label for="fCinema">โรงหนัง / สาขา</label><input id="fCinema" placeholder="เช่น Paragon Cineplex"></div>
+      <div><label for="fSeat">ที่นั่ง</label><input id="fSeat" placeholder="เช่น H12"></div>
+      <div class="full"><label>ให้คะแนน</label><div class="stars" id="stars" role="radiogroup" aria-label="ให้คะแนน"></div></div>
+      <div class="full"><label for="fNote">ความทรงจำ</label><textarea id="fNote" rows="3" placeholder="ไปกับใคร รู้สึกยังไง ฉากไหนประทับใจ"></textarea></div>
+    </div>
+    <div class="actions"><button id="save">บันทึกตั๋ว</button><button id="cancel" class="ghost">ยกเลิก</button></div>
+  </section>
+
+  <main id="list" class="list"></main>
+  <footer>Smile Theater · ตั๋วทั้งหมดเก็บไว้ในเบราว์เซอร์ของคุณ</footer>
+</div>
+
+<script>
+(function(){
+  var KEY='pat-theater-tickets';
+  var tickets=[],rating=0;
+  function load(){try{var r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return null}
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify(tickets))}catch(e){}}
+  var saved=load();
+  tickets=saved||[
+    {id:1,title:'Interstellar',date:'2026-10-18',time:'19:30',cinema:'IMAX · Paragon Cineplex',seat:'H12',rating:5,note:'ไปดูรอบ IMAX กับเพื่อนสนิท ฉากหลุมดำทำเอาลืมหายใจ'},
+    {id:2,title:'Spirited Away',date:'2026-09-02',time:'16:10',cinema:'House Samyan',seat:'C7',rating:4,note:'ดูรอบฉายซ้ำ ขนมที่ซื้อมาคือป๊อปคอร์นคาราเมล หมดตั้งแต่ก่อนหนังเริ่ม'}
+  ];
+  if(!saved)persist();
+
+  var $=function(i){return document.getElementById(i)};
+  var form=$('form'),list=$('list');
+
+  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML}
+  function fmtDate(d){if(!d)return '';var x=new Date(d+'T00:00:00');return isNaN(x)?d:x.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'})}
+  function starStr(n){return '★'.repeat(n)+'☆'.repeat(5-n)}
+
+  function render(){
+    var q=$('q').value.trim().toLowerCase();
+    var rows=tickets.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')||b.id-a.id})
+      .filter(function(t){return !q||(t.title+' '+t.cinema).toLowerCase().indexOf(q)>-1});
+    $('sCount').textContent=tickets.length;
+    var rated=tickets.filter(function(t){return t.rating>0});
+    $('sAvg').textContent=rated.length?(rated.reduce(function(s,t){return s+t.rating},0)/rated.length).toFixed(1):'–';
+    if(!rows.length){
+      list.innerHTML='<div class="empty"><div class="pop">🍿</div><p>'+(tickets.length?'ไม่พบตั๋วที่ค้นหา':'ยังไม่มีตั๋วในคอลเลกชัน กด “เพิ่มตั๋ว” เพื่อเก็บใบแรก')+'</p></div>';
+      return;
+    }
+    list.innerHTML=rows.map(function(t){
+      return '<article class="ticket"><div class="main"><h2>'+esc(t.title)+'</h2><div class="meta">'
+        +(t.date?'<span><b>วันที่</b> '+esc(fmtDate(t.date))+'</span>':'')
+        +(t.time?'<span><b>รอบ</b> '+esc(t.time)+'</span>':'')
+        +(t.cinema?'<span><b>โรง</b> '+esc(t.cinema)+'</span>':'')
+        +'</div>'+(t.note?'<p class="note">'+esc(t.note)+'</p>':'')
+        +'</div><div class="stub"><div class="adm">ADMIT ONE</div>'
+        +(t.seat?'<div class="seat"><small>ที่นั่ง</small>'+esc(t.seat)+'</div>':'<div></div>')
+        +'<div class="st" aria-label="'+t.rating+' จาก 5 ดาว">'+starStr(t.rating||0)+'</div>'
+        +'<button data-del="'+t.id+'" aria-label="ลบตั๋ว '+esc(t.title)+'">ลบตั๋ว</button></div></article>';
+    }).join('');
+  }
+
+  function drawStars(){
+    $('stars').innerHTML=[1,2,3,4,5].map(function(n){
+      return '<button type="button" class="'+(n<=rating?'on':'')+'" data-s="'+n+'" role="radio" aria-checked="'+(n===rating)+'" aria-label="'+n+' ดาว">★</button>';
+    }).join('');
+  }
+  function openForm(){
+    form.classList.add('open');$('toggle').textContent='ปิดฟอร์ม';
+    if(!$('fDate').value)$('fDate').value=new Date().toISOString().slice(0,10);
+    $('fTitle').focus();
+  }
+  function closeForm(){form.classList.remove('open');$('toggle').textContent='+ เพิ่มตั๋ว'}
+  function reset(){['fTitle','fTime','fCinema','fSeat','fNote'].forEach(function(i){$(i).value=''});$('fDate').value='';rating=0;drawStars()}
+
+  $('toggle').onclick=function(){form.classList.contains('open')?closeForm():openForm()};
+  $('cancel').onclick=function(){closeForm();reset()};
+  $('stars').onclick=function(e){var b=e.target.closest('[data-s]');if(!b)return;var n=+b.dataset.s;rating=rating===n?0:n;drawStars()};
+  $('save').onclick=function(){
+    var title=$('fTitle').value.trim();
+    if(!title){$('fTitle').focus();$('fTitle').placeholder='กรุณาใส่ชื่อหนัง';return}
+    tickets.push({id:Date.now(),title:title,date:$('fDate').value,time:$('fTime').value,cinema:$('fCinema').value.trim(),seat:$('fSeat').value.trim().toUpperCase(),rating:rating,note:$('fNote').value.trim()});
+    persist();reset();closeForm();render();
+  };
+  list.onclick=function(e){
+    var b=e.target.closest('[data-del]');if(!b)return;
+    if(confirm('ลบตั๋วใบนี้ออกจากคอลเลกชัน?')){tickets=tickets.filter(function(t){return t.id!==+b.dataset.del});persist();render()}
+  };
+  $('q').oninput=render;
+  drawStars();render();
+})();
+</script>
+</body>
+</html>
